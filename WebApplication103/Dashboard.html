@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard</title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+    
+        <button id="btnLogout" class="btn btn-danger">Logout</button>
+
+        <h1>Dashboard</h1>
+        
+        <button id="btnData" class="btn btn-primary">Load Data</button>
+        <div id="divData" class="hidden">
+            <table class="table table-bordered" id="tblData">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Gender</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+    <script src="Scripts/jquery-3.3.1.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            if (sessionStorage.getItem("accessToken") == null) {
+                window.location.href = "Login.html";
+            }
+
+            $("#btnLogout").click(function () {
+                sessionStorage.removeItem("accessToken");
+                window.location.href = "Login.html";
+            });
+
+            $("#btnData").click(function () {
+
+                $("#divData").removeClass("hidden");
+
+                $.ajax({
+                    url: "/api/employees",
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + sessionStorage.getItem("accessToken")
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        $.each(data, function (index, value) {
+                            var row = $("<tr><td>" + value.Id +
+                                "</td><td>" + value.FirstName +
+                                "</td><td>" + value.LastName +
+                                "</td><td>" + value.Gender +
+                                "</td></tr>");
+                            $("#tblData").append(row);
+                        });
+
+                    },
+                    error: function (jqXHR) {
+                        alert(jqXHR.responseText);
+                    }
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>

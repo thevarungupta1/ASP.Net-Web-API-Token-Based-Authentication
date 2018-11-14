@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Register</title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h1>Register</h1>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="text" id="txtEmail" class="form-control" placeholder="Email"/>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="txtPassword" class="form-control" placeholder="Password"/>
+        </div>
+        <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" id="txtConfirmPassword" class="form-control" placeholder="Confirm Password" />
+        </div>
+        <input type="submit" id="btnSubmit" class="btn btn-primary" value="Register"/>
+
+    </div>
+
+
+
+    <script src="Scripts/jquery-3.3.1.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#btnSubmit").click(function () {
+                $.ajax({
+                    url: "api/account/register",
+                    method: "POST",
+                    data: {
+                        email: $("#txtEmail").val(),
+                        password: $("#txtPassword").val(),
+                        confirmPassword: $("#txtConfirmPassword").val()
+                    },
+                    success: function () {
+                        alert("User Registerd SuucessFully")
+                    },
+                    error: function (jqXHR) {
+                        alert(jqXHR.responseText);
+                    }
+                });
+            });
+
+        });
+    </script>
+
+
+</body>
+</html>
